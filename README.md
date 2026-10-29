@@ -1,16 +1,24 @@
 # 🏁 GRIDLINE RaceHub
 
-## Download
+## Download — one file, no installation
 
-### [⬇ Download the server app ZIP](https://github.com/CzMarci210/Plan-10.30/archive/refs/heads/main.zip)
+### [⬇ Download GRIDLINE.html](https://github.com/CzMarci210/Plan-10.30/raw/refs/heads/main/GRIDLINE.html)
 
-Unzip it, then on Windows double-click **Start-GRIDLINE.cmd**. It checks for Node.js 24+, starts GRIDLINE and opens your browser when ready. No npm install or additional packages are needed. If Node.js is missing, the launcher opens its official download page. Keep the server window open while using the app; Ctrl+C stops it.
+1. Download and save **GRIDLINE.html**.
+2. Double-click it to open in a modern desktop browser.
+3. Keep the file and reopen it whenever you want. No Node.js, terminal, ZIP extraction or server needed.
 
-On macOS/Linux: install Node.js 24+, open the extracted folder in a terminal, run `npm start`, and visit **http://127.0.0.1:3000**.
+Share the download link or the HTML file itself with friends. Each person gets their own browser-local data. Mobile browsers vary in how they open downloaded HTML files; the recommended experience is a desktop browser.
 
-### [⬇ Download the simpler offline HTML](https://github.com/CzMarci210/Plan-10.30/raw/refs/heads/main/GRIDLINE.html)
+The single file includes Home, RaceHub weekend, month/week/day calendars, planner, favorites, event editing, standings, spoiler controls, circuit collection, JSON import/backup and ICS export with reminders. It has a blue/black theme and five interface languages.
 
-Save the file and double-click it. This separate, earlier edition needs no installation and includes the calendar, event editor, five languages and standings snapshots. The expanded RaceHub features below belong to the server app, not this offline file. Browser edits and SQLite data do not synchronize.
+**Important:** Events and preferences are saved in the browser, not written back into the HTML file. Export backups before clearing browser data, changing browsers or moving the file. Sharing the HTML does not share your edits. Browser notifications depend on browser support and require the file to remain open; use ICS alarms for external reminders. Weather and source/watch/ticket links need internet. Standings and race dates are snapshots, not automatic live updates. Series requests are a personal wishlist in this edition, not shared votes.
+
+### Optional server edition
+
+[Download server ZIP](https://github.com/CzMarci210/Plan-10.30/archive/refs/heads/main.zip) if you want SQLite storage and the configurable schedule-feed importer. Unzip and run **Start-GRIDLINE.cmd** on Windows (Node.js 24+ required). No npm install needed. On macOS/Linux run `npm start`.
+
+The server and single-file editions do not synchronize. The full roadmap is still subject to the limitations in [FEATURE-STATUS.md](FEATURE-STATUS.md).
 
 ## Server features
 
@@ -44,3 +52,7 @@ Tests cover event CRUD, import upserts/rollback, conflicts, date validation, ICS
 The service binds to localhost for personal use. Public hosting needs authentication, authorization, HTTPS and a deployment plan. A localhost subscription URL is only reachable from this computer; use ICS import for calendar services that cannot reach it.
 
 Main API: `/api/events`, `/api/series`, `/api/standings`, `/api/status`, `/api/conflicts`, `/api/calendar.ics`, `/api/import`, `/api/replace`, `/api/requests`, `/api/vote`, `/api/weather?lat=...&lon=...`.
+
+## Build the single-file edition
+
+Run `node scripts/build-portable.cjs` from the repository root. It bundles the public UI and a browser-local adapter into `GRIDLINE.html`. Run `node --test tests/portable.test.js` to check storage/import/export behavior.
