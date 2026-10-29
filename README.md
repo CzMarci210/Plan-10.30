@@ -1,58 +1,46 @@
-# GRIDLINE — Motorsport Calendar
+# 🏁 GRIDLINE RaceHub
 
-## Offline version — no installation needed
+## Download
 
-Download [GRIDLINE.html](https://github.com/CzMarci210/Plan-10.30/raw/refs/heads/main/GRIDLINE.html), then double-click the saved file in your browser.
+### [⬇ Download the server app ZIP](https://github.com/CzMarci210/Plan-10.30/archive/refs/heads/main.zip)
 
-- Single HTML file with inline CSS and JavaScript; no Node.js or internet required.
-- Blue-and-black theme; English, Hungarian, German, French and Spanish.
-- Calendar and list views, series filters, event editing, localStorage persistence, JSON backup/restore and ICS export.
-- 14 sourced upcoming events for October–December 2026, imported as date-only events.
-- Standings tab: top 10 for F1, MotoGP, WEC Hypercar drivers, WRC, IndyCar, Formula E and NASCAR Cup; also all eight WEC Hypercar manufacturers. Each table links to its data source.
-- Standings snapshot checked 29 October 2026; not live. Formula E shows the completed 2025–26 season. Source links need internet. NASCAR totals are sourced from NASCAR Reference; an official NASCAR standings link is also provided.
-- Existing custom events from the earlier offline file are preserved; demo events are replaced on first migration.
+Unzip it, then on Windows double-click **Start-GRIDLINE.cmd**. It checks for Node.js 24+, starts GRIDLINE and opens your browser when ready. No npm install or additional packages are needed. If Node.js is missing, the launcher opens its official download page. Keep the server window open while using the app; Ctrl+C stops it.
 
-This is separate from the SQLite server application below. It does not synchronize with the server. Browser storage belongs to the browser and file location; export a backup before moving the file or clearing browser data.
+On macOS/Linux: install Node.js 24+, open the extracted folder in a terminal, run `npm start`, and visit **http://127.0.0.1:3000**.
 
-Működő webes motorsportnaptár valódi SQLite adatbázissal.
+### [⬇ Download the simpler offline HTML](https://github.com/CzMarci210/Plan-10.30/raw/refs/heads/main/GRIDLINE.html)
 
-## Indítás
+Save the file and double-click it. This separate, earlier edition needs no installation and includes the calendar, event editor, five languages and standings snapshots. The expanded RaceHub features below belong to the server app, not this offline file. Browser edits and SQLite data do not synchronize.
 
-Telepítsd a Node.js 22.13+ verzióját (ajánlott 24), majd a projekt mappájában:
+## Server features
 
-```bash
-npm start
-```
+- Blue/black interface with English, Hungarian, German, French and Spanish.
+- Home, month/week/day calendars, RaceHub weekend overview and overlap detection.
+- Favorites for series, driver/team names and events; personalized weekend planner.
+- Session editing, timezone display, countdowns, spoiler controls, results and standings.
+- Circuit pages, visited collection, map/ticket/watch links and coordinate-based weather forecasts.
+- Browser reminders while open, ICS alarms/export and a calendar subscription endpoint.
+- SQLite storage, backup/restore, schedule imports and optional automatic authorized feeds.
+- Championship requests/votes and a web-app manifest with cached shell.
 
-Nyisd meg: **http://127.0.0.1:3000**
+**Coverage is explicit:** 36 series can be entered or imported, but the bundle currently contains only 14 sourced date-only events from 5 series. Standings are a 29 October 2026 snapshot. No live timing, full-season feed, background push, native widgets or paid subscriptions are active.
 
-Az alkalmazás automatikusan létrehozza a `data/motorsport.sqlite` adatbázist. Nincs szükség külön adatbázisszerverre, API-kulcsra vagy npm-függőségekre.
+See [FEATURE-STATUS.md](FEATURE-STATUS.md) for the full implemented/pending checklist and [FEEDS.md](FEEDS.md) for provider setup and import format. The full product roadmap is not yet complete.
 
-Fejlesztés: `npm run dev`. Tesztek: `npm test`.
+## Data
 
-## Funkciók
+Existing custom SQLite events are retained. A one-time migration replaces untouched demo events with sourced fixtures. Driver/team following matches the names supplied in event metadata; bundled date-only events do not yet include participant rosters. Planner conflict detection and countdowns require verified session times, so date-only events are not given invented start times.
 
-- Havi naptár és versenylista, magyar nyelvű, mobilbarát megjelenéssel
-- F1, MotoGP, WEC, WRC, IndyCar, Formula E, NASCAR sorozatok
-- Szűrés, keresés, navigáció a hónapok között
-- Események létrehozása, szerkesztése és törlése
-- Valódi SQLite-adattárolás és REST API
-- Egyéni vagy teljes naptár exportálása .ics fájlba
+Preferences and saved plans belong to this browser; shared events belong to `data/motorsport.sqlite`. Back up this database while the server is stopped. JSON backup/restore is also available in the app. Editing an imported event detaches its source ID so a later feed refresh does not overwrite that manual edit.
 
-**Figyelem:** Az első indításkor megjelenő események DEMO események, nem hivatalosan ellenőrzött versenydátumok. Szabadon módosíthatók vagy törölhetők.
+The optional schedule feed refreshes every 15 minutes. Without a configured feed, refreshing the page only reloads SQLite; it does not fetch new official race schedules. Open-Meteo weather requires internet and coordinates; its free endpoint is for non-commercial use.
 
-## API
+## Development
 
-- `GET /api/health`
-- `GET /api/series`
-- `GET /api/events` (opcionális: `series` és `q`)
-- `GET /api/events/:id`
-- `POST /api/events`
-- `PUT /api/events/:id`
-- `DELETE /api/events/:id`
-- `GET /api/calendar.ics`
-- `GET /api/events/:id.ics`
+Node.js 24+; no runtime dependencies. `npm start`, `npm run dev`, `npm test`.
 
-## Biztonság
+Tests cover event CRUD, import upserts/rollback, conflicts, date validation, ICS dates/alarms/folding, votes, origin checks and application routes. Browser preview verified Home and weekend views; broader browser automation was unavailable after those checks.
 
-A szerver alapértelmezés szerint csak a helyi gépen (`127.0.0.1`) érhető el. Nincs még bejelentkezés; ne tedd közzé nyilvános interneten hitelesítés és HTTPS nélkül.
+The service binds to localhost for personal use. Public hosting needs authentication, authorization, HTTPS and a deployment plan. A localhost subscription URL is only reachable from this computer; use ICS import for calendar services that cannot reach it.
+
+Main API: `/api/events`, `/api/series`, `/api/standings`, `/api/status`, `/api/conflicts`, `/api/calendar.ics`, `/api/import`, `/api/replace`, `/api/requests`, `/api/vote`, `/api/weather?lat=...&lon=...`.
