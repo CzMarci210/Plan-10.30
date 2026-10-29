@@ -1,5 +1,19 @@
 # GRIDLINE — Motorsport Calendar
 
+## Offline version — no installation needed
+
+Download [GRIDLINE.html](https://github.com/CzMarci210/Plan-10.30/raw/refs/heads/main/GRIDLINE.html), then double-click the saved file in your browser.
+
+- Single HTML file with inline CSS and JavaScript; no Node.js or internet required.
+- Blue-and-black theme; English, Hungarian, German, French and Spanish.
+- Calendar and list views, series filters, event editing, localStorage persistence, JSON backup/restore and ICS export.
+- 14 sourced upcoming events for October–December 2026, imported as date-only events.
+- Standings tab: top 10 for F1, MotoGP, WEC Hypercar drivers, WRC, IndyCar, Formula E and NASCAR Cup; also all eight WEC Hypercar manufacturers. Each table links to its data source.
+- Standings snapshot checked 29 October 2026; not live. Formula E shows the completed 2025–26 season. Source links need internet. NASCAR totals are sourced from NASCAR Reference; an official NASCAR standings link is also provided.
+- Existing custom events from the earlier offline file are preserved; demo events are replaced on first migration.
+
+This is separate from the SQLite server application below. It does not synchronize with the server. Browser storage belongs to the browser and file location; export a backup before moving the file or clearing browser data.
+
 Működő webes motorsportnaptár valódi SQLite adatbázissal.
 
 ## Indítás
